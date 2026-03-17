@@ -11,6 +11,54 @@ import CollectionsPage from './pages/CollectionsPage';
 import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('React Error Boundary caught an error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          padding: '20px',
+          textAlign: 'center',
+          backgroundColor: '#faf8f4',
+          minHeight: '100vh',
+          color: '#1a1814'
+        }}>
+          <h1>Something went wrong</h1>
+          <p>Please refresh the page or try again later.</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#1a1814',
+              color: '#faf8f4',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Refresh Page
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 function AppContent() {
   const [page, setPage] = useState('home');
   const [cartOpen, setCartOpen] = useState(false);
@@ -47,8 +95,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <CartProvider>
-      <AppContent />
-    </CartProvider>
+    <ErrorBoundary>
+      <CartProvider>
+        <AppContent />
+      </CartProvider>
+    </ErrorBoundary>
   );
 }
