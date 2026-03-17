@@ -33,7 +33,7 @@ function AppContent() {
   };
 
   return (
-    <div className="page">
+    <div className="page" style={{ backgroundColor: '#faf8f4', minHeight: '100vh', color: '#1a1814' }}>
       <Navbar onCartOpen={() => setCartOpen(true)} currentPage={page} onNavigate={navigate} />
       {renderPage()}
       <Footer />
